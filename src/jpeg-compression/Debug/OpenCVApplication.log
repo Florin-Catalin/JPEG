@@ -1,0 +1,72 @@
+﻿  OpenCVApplication.cpp
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(46): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(451): warning C4244: '=': conversion from 'double' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=uchar
+          ]
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(624): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(625): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(628): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(629): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(635): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(679): warning C4244: '=': conversion from 'double' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(649): warning C4101: 'data': unreferenced local variable
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(707): warning C4244: '+=': conversion from '_Tp' to 'int', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(711): warning C4244: '=': conversion from 'float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=uchar
+          ]
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(726): warning C4244: '+=': conversion from '_Tp' to 'int', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(776): warning C4244: '=': conversion from 'double' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(783): warning C4244: '=': conversion from 'double' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(819): warning C4101: 'sum': unreferenced local variable
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(900): warning C4305: '+=': truncation from 'double' to '_Tp'
+          with
+          [
+              _Tp=float
+          ]
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(980): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\florin\desktop\computer-vision-application\src\computer-vision\opencvapplication.cpp(996): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  OpenCVApplication.vcxproj -> C:\Users\Florin\Desktop\Computer-vision-application\src\computer-vision\Debug\OpenCVApplication.exe
+  OpenCV\dll\Debug\opencv_calib3d2413d.dll
+  OpenCV\dll\Debug\opencv_contrib2413d.dll
+  OpenCV\dll\Debug\opencv_core2413d.dll
+  OpenCV\dll\Debug\opencv_features2d2413d.dll
+  OpenCV\dll\Debug\opencv_ffmpeg2413.dll
+  OpenCV\dll\Debug\opencv_flann2413d.dll
+  OpenCV\dll\Debug\opencv_gpu2413d.dll
+  OpenCV\dll\Debug\opencv_highgui2413d.dll
+  OpenCV\dll\Debug\opencv_imgproc2413d.dll
+  OpenCV\dll\Debug\opencv_legacy2413d.dll
+  OpenCV\dll\Debug\opencv_ml2413d.dll
+  OpenCV\dll\Debug\opencv_nonfree2413d.dll
+  OpenCV\dll\Debug\opencv_objdetect2413d.dll
+  OpenCV\dll\Debug\opencv_ocl2413d.dll
+  OpenCV\dll\Debug\opencv_photo2413d.dll
+  OpenCV\dll\Debug\opencv_stitching2413d.dll
+  OpenCV\dll\Debug\opencv_superres2413d.dll
+  OpenCV\dll\Debug\opencv_video2413d.dll
+  OpenCV\dll\Debug\opencv_videostab2413d.dll
+         19 file(s) copied.
