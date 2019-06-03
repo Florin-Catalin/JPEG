@@ -1,5 +1,5 @@
 ﻿  OpenCVApplication.cpp
-c:\users\florin\desktop\jpeg-compresssion\src\jpeg-compression\opencvapplication.cpp(272): warning C4018: '<': signed/unsigned mismatch
+c:\users\florin\desktop\jpeg-compresssion\src\jpeg-compression\opencvapplication.cpp(291): warning C4018: '<': signed/unsigned mismatch
   OpenCVApplication.vcxproj -> C:\Users\Florin\Desktop\JPEG-compresssion\src\jpeg-compression\Debug\OpenCVApplication.exe
   OpenCV\dll\Debug\opencv_calib3d2413d.dll
   OpenCV\dll\Debug\opencv_contrib2413d.dll

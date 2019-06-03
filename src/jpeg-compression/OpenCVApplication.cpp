@@ -15,22 +15,6 @@ Mat get_image(char* received_image, int opening_type) {
 	image = imread(received_image, opening_type);
 	return image;
 }
-void display_image(Mat image) {
-	namedWindow("Display Image", WINDOW_AUTOSIZE);
-	imshow("Display Image", image);
-	waitKey(0);
-}
-Mat convert_to_YCrCb(Mat image) {
-	Mat converted_image = image.clone();
-	cvtColor(image, converted_image, CV_RGB2YCrCb);
-	return converted_image;
-}
-
-Mat convert_to_RGB(Mat image) {
-	Mat converted_image = image.clone();
-	cvtColor(image, converted_image, CV_YCrCb2RGB);
-	return converted_image;
-}
 
 Mat_<Vec3b> YCbCr_to_RGB(const Mat_<Vec3i>& img_ycbcr)
 {
@@ -55,8 +39,25 @@ Mat_<Vec3b> YCbCr_to_RGB(const Mat_<Vec3i>& img_ycbcr)
 	return img_rgb;
 }
 
+void display_image(Mat image) {
+	namedWindow("Display Image", WINDOW_AUTOSIZE);
+	imshow("Display Image", image);
+	waitKey(0);
+}
+Mat convert_to_YCrCb(Mat image) {
+	Mat converted_image = image.clone();
+	cvtColor(image, converted_image, CV_RGB2YCrCb);
+	return converted_image;
+}
 
-static const int ql[8][8]{
+Mat convert_to_RGB(Mat image) {
+	Mat converted_image = image.clone();
+	cvtColor(image, converted_image, CV_YCrCb2RGB);
+	return converted_image;
+}
+
+
+ const int ql[8][8]{
 		{ 16, 11, 10, 16, 24, 40, 51, 61 },
 		{ 12, 12, 14, 19, 26, 58, 60, 55 },
 		{ 14, 13, 16, 24, 40, 57, 69, 56 },
@@ -67,7 +68,19 @@ static const int ql[8][8]{
 		{ 72, 92, 95, 98, 112, 100, 103, 99 }
 };
 
-static const int qc[8][8]{
+
+ /* 500 KB for parrots
+ const int qc[8][8]{
+   { 128, 128, 128, 128, 99, 99, 99, 99 },
+   { 128, 128, 128,128, 99, 99, 99, 99 },
+   { 128, 128, 128, 128, 99, 99, 99, 99 },
+   { 128, 128, 128, 128, 99, 99, 99, 99 },
+   { 128, 128, 128, 99, 99, 99, 99, 99 },
+   { 128, 128, 128, 99, 99, 99, 99, 99 },
+   {128, 128, 128, 99, 99, 99, 99, 99 },
+   { 128, 128, 128, 99, 99, 99, 99, 99 }
+};*/
+ const int qc[8][8]{
 	{ 17, 18, 24, 47, 99, 99, 99, 99 },
 	{ 18, 21, 26, 66, 99, 99, 99, 99 },
 	{ 24, 26, 56, 99, 99, 99, 99, 99 },
@@ -115,6 +128,7 @@ static Mat_<Vec3i> FCDT(const Mat_<Vec3i>& src)
 					ny *= ci * cj;
 					ncb *= ci * cj;
 					ncr *= ci * cj;
+
 
 					// quantize using quantization matrix
 					ny /= ql[i][j];
@@ -166,10 +180,11 @@ static Mat_<Vec3i> ICDT(const Mat_<Vec3i>& src)
 						}
 					}
 
+					// rounding 
 					ny = (ny - floor(ny) <= 0.5) ? floor(ny) : ceil(ny);
 					ncb = (ncb - floor(ncb) <= 0.5) ? floor(ncb) : ceil(ncb);
 					ncr = (ncr - floor(ncr) <= 0.5) ? floor(ncr) : ceil(ncr);
-
+					// + 128 convert to unsigned 
 					dst(br + y, bc + x) = Vec3i{ (int)ny + 128, (int)ncb, (int)ncr };
 				}
 			}
@@ -180,8 +195,10 @@ static Mat_<Vec3i> ICDT(const Mat_<Vec3i>& src)
 }
 
 
-static vector<Vec3i> Zigzag(const Mat_<Vec3i>& src, int quality)
+static vector<Vec3i> Zigzag(const Mat_<Vec3i>& src, int rate)
 {
+
+	
 	vector<Vec2i> zz{};
 
 	for (int i = 0; i < 8; ++i)
@@ -209,8 +226,10 @@ static vector<Vec3i> Zigzag(const Mat_<Vec3i>& src, int quality)
 	for (int br = 0; br < src.rows; br += 8)
 	{
 		for (int bc = 0; bc < src.cols; bc += 8)
-		{
-			for (int i = 0; i < quality; ++i)
+		{ 
+
+			// compression ration depending on how large the values in the quantization table are
+			for (int i = 0; i < rate ; ++i)
 			{
 				res.push_back(src(br + zz[i][0], bc + zz[i][1]));
 			}
@@ -220,7 +239,7 @@ static vector<Vec3i> Zigzag(const Mat_<Vec3i>& src, int quality)
 	return res;
 }
 
-static Mat_<Vec3i> Zigzag2(const vector<Vec3i>& src, int rows, int cols, int quality)
+static Mat_<Vec3i> iZigzag(const vector<Vec3i>& src, int rows, int cols, int quality)
 {
 	vector<Vec2i> zz{};
 
@@ -244,7 +263,7 @@ static Mat_<Vec3i> Zigzag2(const vector<Vec3i>& src, int rows, int cols, int qua
 			zz.push_back({ r, c });
 		}
 	}
-
+	
 	Mat_<Vec3i> res(rows, cols, { 0, 0, 0 });
 	for (int br = 0, k = 0; br < rows; br += 8)
 	{
@@ -280,7 +299,7 @@ void WriteJPEG(vector<Vec3i> data, int rows, int cols, char *path, int quality)
 
 static vector<Vec3i> ReadJPEG(char *path, int& rows, int& cols, int& quality)
 {
-	ifstream fin(path, std::ios::binary);
+	ifstream fin(path, ios::binary);
 
 	fin.read((char *)(&rows), sizeof(rows));
 	fin.read((char *)(&cols), sizeof(cols));
@@ -302,26 +321,25 @@ static vector<Vec3i> ReadJPEG(char *path, int& rows, int& cols, int& quality)
 	return data;
 }
 
-void encoder(char *src, char *dst, int quality)
+void encoder(char *src, char *dst, int rate)
 {
-	cout << quality << std::endl;
+	
 	Mat_<Vec3b> img = imread(src), img_resize;
 	resize(img, img_resize, { (int)(ceil(img.cols / 8.0) * 8), (int)(ceil(img.rows / 8.0) * 8) });
 
-	
 	Mat img_ycbcr = convert_to_YCrCb(img_resize);
 	Mat temp = FCDT(img_ycbcr);
-	vector<Vec3i> jpeg_data = Zigzag(temp, quality);
-	WriteJPEG(jpeg_data, temp.rows, temp.cols, dst, quality);
+	vector<Vec3i> jpeg_data = Zigzag(temp, rate);
+	WriteJPEG(jpeg_data, temp.rows, temp.cols, dst, rate);
 
 }
 
 void decoder(char *src, char *dst)
 {
 	//decoding pipeline
-	int rows, cols, quality;
-	vector<Vec3i> jpegData = ReadJPEG(src, rows, cols, quality);
-	Mat temp = Zigzag2(jpegData, rows, cols, quality);
+	int rows, cols, rate;
+	vector<Vec3i> jpegData = ReadJPEG(src, rows, cols, rate);
+	Mat temp = iZigzag(jpegData, rows, cols, rate);
 	Mat img_ycbcr = ICDT(temp);
 	Mat img = YCbCr_to_RGB(img_ycbcr);
 
@@ -331,7 +349,7 @@ void decoder(char *src, char *dst)
 int main()
 {
 	char fname[MAX_PATH];
-	char out[MAX_PATH]; 
+	char out[MAX_PATH];
 	if (openFileDlg(fname)) {
 		
 		display_image(convert_to_RGB(convert_to_YCrCb(get_image(fname, CV_LOAD_IMAGE_COLOR))));
